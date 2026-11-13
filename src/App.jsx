@@ -3,14 +3,23 @@ import Header from './Header.jsx'
 import Resultados from './Resultados.jsx'
 import {useState} from 'react'
 import {mock1} from './constants/users.js'
+import CONFIG from './config/config.js'
 
 function App() {
   const [query, setQuery] = useState('')
   const [resultado, setResultado] = useState(null)
 
-  const callServer = () => {
+  const callServer = async() => {
     console.log("CICK!")
-    setResultado(mock1.users)
+    if(CONFIG.use_server){
+      const response = await fetch(CONFIG.server_url)
+      const data = await response.json()
+      console.log(data)
+      setResultado(data.users)
+    }else{
+        setResultado(mock1.users)
+
+    }  
   }
 
   return (
